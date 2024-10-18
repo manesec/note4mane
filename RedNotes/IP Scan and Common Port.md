@@ -47,9 +47,17 @@ for /L %i in (1 1 254) do ping 172.16.5.%i -n 1 -w 100 | find "Reply"
 ## UDP Nmap
 
 ```
-
 # SNMP
 $ sudo nmap -vv -sU -p 161,162,10161,10162 <IP>
+```
 
 
+## Ligolo Quick Command
+
+```
+$ sudo ip link del ligolo
+$ sudo ip tuntap add user [your_username] mode tun ligolo
+$ sudo ip link set ligolo up
+$ sudo ip route add 192.168.0.0/24 dev ligolo
+$ sudo ip route add 240.0.0.1/32 dev ligolo
 ```
