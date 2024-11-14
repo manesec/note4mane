@@ -56,8 +56,6 @@ $ SELECT DEFAULT_DOMAIN()
 MEGACORP
 $ SELECT master.dbo.fn_varbintohexstr(SUSER_SID('MEGACORP\Administrator'))
 0x0105000000000005150000001c00d1bcd181f1492bdfc236f4010000
-
-
 ```
 
 See: https://book.hacktricks.xyz/pentesting-web/sql-injection/mssql-injection#fn_xe_file_target_read_file
