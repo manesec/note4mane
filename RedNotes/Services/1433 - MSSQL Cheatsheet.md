@@ -109,6 +109,8 @@ select @@version;
 
 enum_logins
 
+use_link [COMPATIBILITY\POO_CONFIG]
+
 # Recon
 EXECUTE ('select @@servername;') at [COMPATIBILITY\POO_CONFIG];
 
