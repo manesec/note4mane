@@ -1,4 +1,4 @@
-# GDB Debug 
+# GDB Debug Script
 
 
 ## Write Data
