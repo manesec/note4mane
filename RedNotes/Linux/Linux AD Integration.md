@@ -61,5 +61,7 @@ $ cat /etc/krb5.conf
 
 <SNIP>
 
+$ kinit username
+$ klist
 $ evil-winrm -i dc01 -r inlanefreight.htb
 ```
